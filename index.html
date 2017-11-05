@@ -131,10 +131,10 @@
                 event.latLng.lat() + "," + event.latLng.lng() + "/forecast";
             $.get(url_weather, function(res) {
                 console.log(res);
-                /* for this map click, append data to side_bar */
+                /* for this click on map, append data to side_bar */
                 $("#display_data").append("<p>Lat:  " + res.geometry.coordinates[1] +
                     "   Lng:  " + res.geometry.coordinates[0] + '</p>');
-                /* for this map click, create a row and insert 14 thumbnails and short forecast*/
+                /* for this click on map, create a row and insert 14 thumbnails and short forecast */
                 var row_str = '<div class="icon_row">';
                 var location_data = res.properties.periods;
                 for (var j = 0; j < location_data.length; j++) {
