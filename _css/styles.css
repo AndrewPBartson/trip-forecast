@@ -1,0 +1,188 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  color: #222;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  background-color: #eee;
+}
+h1 {
+  font-size: 36px;
+  text-align: center;
+  margin-top: 10px;
+  color: #3e3a3a;
+  font-weight: 300;
+  text-shadow: 1px 3px 2px #b8b8bd;
+}
+h2 {
+  text-shadow: 0 0 7px #000000;
+  text-shadow: 0 0 5px black, 0 0 5px black, 0 0 5px black;
+}
+h3 {
+  font-size: 18px;
+  text-align: center;
+  margin: 0 20px;
+  font-weight: 400;
+  text-shadow: 1px 3px 5px #ddd;
+  color: #3e3a3a;
+}
+a {
+  color: black;
+}
+.switch_view:hover, #goBack:hover, #startOver:hover {
+  text-decoration: none;
+  color: #0000b4;
+  cursor: pointer;
+  border-radius: 6px;
+}
+#container_ {
+  height: 100%;
+}
+#map_ {
+  height: 100%;
+  margin-left: 250px;
+  border-left: solid gray 1px;
+}
+#anti_map {
+  display: none;
+  color: #333;
+}
+#side_bar_ {
+  width: 248px;
+  height: 100%;
+  float: left;
+  color: #0000b4;
+  display: grid;
+  grid-template-rows: 170px auto 50px 50px 50px;
+  align-items: start;
+}
+#mainTitle {
+  display: grid;
+  grid-template-rows: 60px 50px 60px;
+  align-items: center;
+}
+.switch_view {
+  margin: 0 40px;
+}
+#startOver {
+  margin: 0 30px;
+}
+#startOver, .switch_view {
+  display: none;
+  color: black;
+}
+#footer {
+  display: grid;
+  grid-template-rows: 1fr;
+  align-items: center;
+  text-align: center;
+}
+#footer p {
+  font-size: 14px;
+  margin: 0;
+  color: #3e3a3a;
+  text-shadow: 1px 3px 2px #ddd;
+}
+#display_data {
+  margin: 0;
+  text-align: center;
+  display: grid;
+  grid-template-rows: repeat(auto-fill, 30px);
+  align-items: start;
+}
+#display_data div {
+  height: 28px;
+}
+.placeName {
+  align-self: start;
+  display: inline-block;
+  vertical-align: top;
+  margin: 0;
+  text-shadow: 1px 3px 2px #ddd;
+  color: #3e3a3a;
+}
+section:nth-of-type(odd) {
+  background-color: rgb(198, 218, 251);
+}
+a:hover {
+  text-decoration: none;
+}
+.grid {
+  display: grid;
+  align-items: center;
+}
+.header, .location {
+  color: #0000b4;
+  line-height: 1.2;
+}
+.header {
+  margin: 0;
+  align-self: center;
+  justify-self: center;
+}
+.city_box {
+  align-self: center;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+}
+.location {
+  align-self: start;
+  margin: 0;
+}
+.weather_icon {
+  width: 80px;
+  height: 80px;
+  border-radius: .4rem;
+  margin-top: 9px;
+}
+.icon_row, .header_row {
+  display: grid;
+  grid-template-columns: 208px repeat(14, 96px);
+  justify-items: center;
+}
+.icon_row {
+  height: 158px;
+  align-items: start;
+}
+.header_row {
+  height: 50px;
+  align-items: center;
+}
+.icon_box, .header_box {
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  text-align: center;
+}
+.header_box {
+    align-items: center;
+}
+.icon_box {
+  align-items: start;
+  position: relative;
+}
+.icon_text {
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.4;
+  margin-right: 2px;
+  margin-left: 2px;
+  margin-top: 6px;
+  margin-bottom: 0;
+}
+.temperature {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.5;
+  margin: 0;
+  color: white;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: auto;
+  text-shadow: 0px 2px 20px 20px black;
+}
+
+h2 {
+  text-shadow: 0px 2px 20px 20px black;
+}
