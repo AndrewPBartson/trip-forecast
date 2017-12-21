@@ -29,7 +29,8 @@ h3 {
 a {
   color: black;
 }
-.switch_view:hover, #goBack:hover, #startOver:hover {
+.switch_view:hover, #goBack:hover,
+#startOver:hover, #saveLocally:hover {
   text-decoration: none;
   color: #0000b4;
   cursor: pointer;
@@ -53,7 +54,7 @@ a {
   float: left;
   color: #0000b4;
   display: grid;
-  grid-template-rows: 170px auto 50px 50px 50px;
+  grid-template-rows: 170px auto 50px 50px 50px 50px;
   align-items: start;
 }
 #mainTitle {
@@ -64,10 +65,10 @@ a {
 .switch_view {
   margin: 0 40px;
 }
-#startOver {
+#startOver, #saveLocally {
   margin: 0 30px;
 }
-#startOver, .switch_view {
+#startOver, #saveLocally, .switch_view {
   display: none;
   color: black;
 }
@@ -175,14 +176,9 @@ a:hover {
   font-weight: 500;
   line-height: 1.5;
   margin: 0;
-  color: white;
+  color: #f9d66e;
   position: absolute;
   top: 10px;
   right: 10px;
   width: auto;
-  text-shadow: 0px 2px 20px 20px black;
-}
-
-h2 {
-  text-shadow: 0px 2px 20px 20px black;
 }

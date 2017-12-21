@@ -1,0 +1,60 @@
+.title {
+}
+.header {
+}
+.city_box {
+  align-self: center;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+}
+.location {
+  align-self: start;
+  margin: 0;
+}
+.weather_icon {
+  width: 80px;
+  height: 80px;
+  border-radius: .4rem;
+  margin-top: 9px;
+}
+.icon_row {
+  display: grid;
+  grid-template-columns: 208px repeat(14, 96px);
+  height: 158px;
+  align-items: start;
+  justify-items: center;
+}
+.icon_row:first-child {
+  align-items: center;
+}
+.icon_box {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: start;
+  justify-items: center;
+  text-align: center;
+}
+.icon_text {
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.4;
+  margin-right: 2px;
+  margin-left: 2px;
+  margin-top: 6px;
+  margin-bottom: 0;
+}
+.text_box {
+  height: 70px;
+}
+.temp {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.5;
+  margin: 0;
+}
+.hi {
+  color: red;
+}
+.lo {
+  color: red;
+}

@@ -1,0 +1,95 @@
+@import "compass/css3";
+html, body {
+  font-family: Helvetica;
+  height: 100%;
+  min-height: 100%;
+  overflow: hidden;
+  width: 900px;
+}
+.wrapper--page {
+  display: -webkit-flex;
+  height: 99%;
+  overflow: hidden;
+  -webkit-flex-direction: column;
+  padding-bottom: 10px;
+}
+.is-collapsed {
+  display: none;
+}
+.flexie {
+  overflow: hidden;
+  -webkit-flex: auto;
+}
+.flexie-row {
+  max-height: 40px;
+  display: -webkit-flex;
+  -webkit-flex: auto 0 0;
+}
+.flexie-row .col-scrollable {
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.header--page {
+  background-color: #ccc;
+  min-height: 30px;
+  -webkit-flex-grow: 0;
+  -webkit-flex-shrink: 0;
+}
+.header--view {
+  background-color: #ddd;
+  height: 130px;
+  -webkit-flex-grow: 0;
+  -webkit-flex-shrink: 0;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+table tr:first-child {
+  background-color: #ccc;
+}
+table tr:nth-child(even) {
+  background-color: #eee;
+}
+table tr:last-child {
+  background-color: #ccc;
+}
+table td, table th {
+  height: 30px;
+  font-size: 13px;
+  padding: 3px;
+  text-transform: capitalize;
+}
+table th {
+  background: gray;
+  text-align: left;
+}
+table th:hover {
+  background: darkgray;
+}
+.content--main {
+  display: -webkit-flex;
+}
+.col-sticky {
+  -webkit-flex: 1;
+  border-right: 3px solid #bbb;
+}
+.col-sticky table {
+  width: 100%;
+}
+.content--main .col-sticky {
+  overflow-x: scroll;
+}
+.col-scrollable {
+  -webkit-flex: 8;
+  overflow: scroll;
+}
+.col-scrollable table {
+  width: 1400px;
+}
+.actions {
+  display: none;
+  position: fixed;
+  right: 10px;
+  top: 10px;
+}

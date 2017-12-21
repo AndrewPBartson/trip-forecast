@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--<link rel="stylesheet" href="css/bootstrap.min.css">-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+    <title>Trip Forecast - Weather reports across the US</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #container_ {
+            padding: 15px;
+            height: 100%;
+        }
+        #map_ {
+            height: 100%;
+            margin-left: 250px;
+            border: solid black 1px;
+            border-radius: 15px;
+        }
+        #anti_map {
+            height: 100%;
+            margin-left: 265px;
+            border: solid black 1px;
+            border-radius: 15px;
+            display: none;
+            width: 1392px;
+            padding: 10px;
+        }
+        #side_bar_ {
+            width: 248px;
+            height: 100%;
+            border: solid blue 1px;
+            float: left;
+            margin-right: 15px;
+            border-radius: 15px;
+            color: #0000b4;
+            background-color: #e2ecee;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 15px;
+        }
+        h1 {
+            font-size: 33px;
+            text-align: center;
+            margin-top: 5px;
+        }
+        h2 {
+            font-size: 25px;
+            text-align: center;
+            margin: 20px 5px;
+        }
+        h3 {
+            font-size: 20px;
+            text-align: center;
+            margin: 20px 5px;
+        }
+        #footer {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #footer p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        .icon_row {
+            width: 1392px;
+        }
+        .weather_icon {
+            display: inline-block;
+            border: none;
+            width: 80px;
+            height: 80px;
+        }
+        .img-thumbnail {
+            border: none;
+            padding: 0;
+            margin: 6px 8px;
+        }
+        .icon_text {
+            font-size: 10px;
+            text-align: center;
+        }
+        .icon_box {
+            height: 135px;
+            width: 96px;
+            display: inline-block;
+            vertical-align: top;
+        }
+    </style>
+    <!--<script src="jquery-3.2.1.min.js"></script>-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>var infos = [];  // tracks infoWindows</script>
+</head>
+<body>
+<div id="container_">
+    <div id="side_bar_">
+        <div>
+            <h1>Trip Forecast</h1>
+            <h3>Click on locations along your route</h3>
+        </div>
+        <div id="display_data"></div>
+        <button id="switch_view">Show forecasts</button>
+        <div id="footer">
+            <p>Andrew Patrick Bartson</p>
+            <p>Galvanize 2017</p>
+        </div>
+    </div>
+    <div id="map_"></div>
+    <div id="anti_map"></div>
+</div>
+<script>
+    var map;
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map_'), {
+            center: {lat: 38.617319, lng: -98.0},
+            zoom: 5,
+            draggableCursor: 'default'
+        });
+        // ajax request for reverse geo-coding
+        google.maps.event.addListener(map, 'click', function(event) {
+          console.log('click event - ', event);
+          let url_geocode = "https://maps.googleapis.com/maps/api/geocode/json?latlng="
+          + event.latLng.lat() + "," + event.latLng.lng() + "&key=AIzaSyCw4czRm3DzsYvilZl7s2_TgLJedG5RVbg";
+          console.log('url - ', url_geocode);
+
+          $.get(url_geocode, function(res_geo) {
+              console.log('res_geo - ', res_geo)
+          // add name of location as a label to weather icons
+          }, 'json');  // end geocode ajax request
+        });
+
+        // ajax request for directions API
+        google.maps.event.addListener(map, 'click', function(event) {
+          let url_route = "https://maps.googleapis.com/maps/api/directions/json?origin=75+9th+Ave+New+York,+NY&destination=MetLife+Stadium+1+MetLife+Stadium+Dr+East+Rutherford,+NJ+07073&ey=AIzaSyCw4czRm3DzsYvilZl7s2_TgLJedG5RVbg";
+          console.log('url - ', url_route);
+
+          $.get(url_route, function(res_route) {
+              console.log('res_route - ', res_route);
+          // add a red line on map to show route
+        }, 'json');  // end directions ajax request
+        });
+
+        // ajax request to weather.gov
+        google.maps.event.addListener(map, 'click', function(event) {
+             var url_weather = "https://api.weather.gov/points/" +
+                event.latLng.lat() + "," + event.latLng.lng() + "/forecast";
+                //console.log("event - ", event);
+            $.get(url_weather, function(res) {
+                console.log(res);
+                /* for this click on map, append data to side_bar */
+                $("#display_data").append("<p>Lat:  " + res.geometry.coordinates[1] +
+                    "   Lng:  " + res.geometry.coordinates[0] + '</p>');
+                /* for this click on map, create a row and insert 14 thumbnails and short forecast */
+                var row_str = '<div class="icon_row">';
+                var location_data = res.properties.periods;
+                for (var j = 0; j < location_data.length; j++) {
+                    row_str += '<div class="icon_box"><img class="img-thumbnail weather_icon" src="' + location_data[j].icon + '">';
+                    //row_str += '<p class="hi_lo">' + location_data[j].temperature + '</p>';
+                    row_str += '<p class="icon_text">' + location_data[j].shortForecast +  '</p></div>'; // add short forecast
+                }
+                row_str += '</div>'; // append closing tag for icon_row
+                $("#anti_map").append(row_str);
+            }, 'json');  // end weather ajax request
+        });
+        /* button click causes map to disappear and anti_map to become visible */
+        $("#switch_view").click(function(){
+            $("#map_").toggle();
+            $("#anti_map").toggle();
+        });
+        //setMarkers(map, waypoints);  // not implemented yet, will display icons on clicked locations
+    } /* end of initMap() */
+
+    function setMarkers(map, trees) {  // change this to display weather data
+
+        /* initialize variables for tree data */
+        var lat_lng = {"lng": 0, "lat": 0};
+        var tree_id, species, species_cap, variety, start_date, section, row, icon_1;  // notes not implemented
+
+        console.log(trees);  // view data structure in console
+        for (var tree in trees) {
+            for (var i = 0; i < trees[tree].length; i++) {
+                for (key2 in trees[tree][i]) {
+                    // in each iteration -
+                    // 1) extract all necessary data for this tree and put in variables
+                    for (key3 in trees[tree][i][key2]) {
+                        var data_point = trees[tree][i][key2][key3];
+                        tree_id = key2;
+                        icon_1 = "images/dir_0.png";
+                        if (key3 === "location") {
+                            lat_lng.lng = (data_point.lng);
+                            lat_lng.lat = (data_point.lat);
+                        }
+                        else if (key3 === "species") {
+                            species = data_point;
+                            species_cap = capitalizeFirstLetter(species);
+                        }
+                        else if (key3 === "variety") {
+                            variety = data_point;
+                        }
+                        else if (key3 === "section") {
+                            section = data_point;
+                        }
+                        else if (key3 === "row") {
+                            row = data_point;
+                        }
+                        else if (key3 === "date_planted") {
+                            start_date = data_point;
+                            if (!start_date) {
+                                start_date = "Unknown";
+                            }
+                        }
+                        //else if (key3 === "notes") {
+                        // not implemented yet
+                        //}
+                        //else if (key3 === "icon") {
+                        // not implemented yet
+                        //}
+                    }
+                    // 2) set up a marker, give lat lng
+                    var marker = new google.maps.Marker({
+                        map: map, position: lat_lng,
+                        icon: icon_1
+
+                    });
+                    // 3) create html content for infoWindow
+                    var content = ("<h3>" + species_cap + " - " + variety + "</h3>" +
+                        "<p>Tree ID - " + key2 + "</p>" +
+                        "<p>Section - " + section + "</p>" +
+                        "<p>Row - " + row + "</p>" +
+                        "<p>Date planted - " + start_date + "</p>" +
+                        "<p>Notes - </p>");
+                    console.log(content);
+                    // 4) load the content into the infoWindow
+                    var infowindow = new google.maps.InfoWindow()
+                    // 5) attach an event listener
+                    google.maps.event.addListener(marker, 'click', (function (marker, content, infowindow) {
+                        return function () {
+                            /* close the previous info-window */
+                            closeInfos();
+                            infowindow.setContent(content);
+                            infowindow.open(map, marker);
+                            /* keep the handle, in order to close it on next click event */
+                            infos[0] = infowindow;
+                        };
+                    })(marker, content, infowindow));
+                }
+            }
+        }
+    }
+
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    function closeInfos() {
+        if (infos.length > 0) {
+            /* detach info-window from marker */
+            infos[0].set("marker", null);
+            /* and close it */
+            infos[0].close();
+            /* blank the array */
+            infos.length = 0;
+        }
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAd0ZZdBnJftinI-qHnPoP9kq5Mtkey6Ac&callback=initMap"
+        async defer></script>
+</body>
+</html>

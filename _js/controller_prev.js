@@ -17,6 +17,8 @@ function initMap() {
   });
 }
 
+// this is a comment near placeMarker
+
 function placeMarker(position, map) {
   var marker = new google.maps.Marker ({
     position: position,
@@ -93,36 +95,24 @@ function addWeatherDataToPage(res_weather, forecastObj) {
   // thumbnail, short forecast, and hi or lo temperature
   for (let j = 0; j < forecastObj.periods.length; j++) {
     rowStr += '<div class="icon_box"><img class="weather_icon" src="' + forecastObj.periods[j].icon + '">'
-    + '<p class="icon_text">' + forecastObj.periods[j].shortForecast +
-    '</p><h2 class="temperature">' + forecastObj.periods[j].temperature + '</h2></div>';
+   + '<p class="temperature">' + forecastObj.periods[j].temperature + '</p>' + '<p class="icon_text">' + forecastObj.periods[j].shortForecast +
+     '</p></div>';
   }
   rowStr += '</section>';
   $("#anti_map").append(rowStr);
 }
 
 /* on click - hide map and sidebar and show anti_map */
-$(".switch_view").click(function(){
+$("#switch_view").click(function(){
   $("#map_").toggle();
   $("#side_bar_").toggle();
   $("#anti_map").toggle();
 });
 
 $("#startOver").click(function(){
-  localStorage.setItem('forecastSet', JSON.stringify(forecastSet));
-  const savedSet = JSON.parse(localStorage.getItem('forecastSet'));
-  console.log('from local storage - ')
-  console.log(savedSet);
   forecastSet.length = 0;
-  // link in startOver button reloads the page, but
-  // might be better to not reload, just do this -
   // remove markers from map
-  // remove forecasts from anti-map
-});
-$("#saveLocally").click(function(){
-  localStorage.setItem('forecastSet', JSON.stringify(forecastSet));
-  const savedSet = JSON.parse(localStorage.getItem('forecastSet'));
-  console.log('from local storage - ')
-  console.log(savedSet);
+  // remove forecasts for anti-map
 });
 
 $("#goBack").click(function(){
@@ -132,12 +122,9 @@ $("#goBack").click(function(){
 });
 
 function displayButtons() {
-  $(".switch_view").toggle();
+  $("#switch_view").toggle();
   $("#startOver").toggle();
-  $("#saveLocally").toggle();
 }
-
-
 
 function sendDirectionsRequest(event, forecastObj) {
   // doesn't work -- Error -  No 'Access-Control-Allow-Origin' header

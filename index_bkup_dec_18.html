@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!--<link rel="stylesheet" href="css/bootstrap.min.css">-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+  <title>Trip Forecast - Weather reports across the US</title>
+  <link rel="stylesheet" href="_css/styles.css">
+  <!--<script src="jquery-3.2.1.min.js"></script>-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script>var infos = [];  // tracks infoWindows</script>
+</head>
+<body>
+  <div id="container_">
+    <div id="side_bar_">
+      <div>
+        <h1>Trip Forecast</h1>
+        <h3>Click on locations along your route</h3>
+      </div>
+      <div id="display_data"></div>
+      <button id="switch_view">Show forecasts</button>
+      <div id="footer">
+        <p>Andrew Patrick Bartson</p>
+        <p>Galvanize 2017</p>
+      </div>
+    </div>
+    <div id="map_"></div>
+  <!-- ***************************************** -->
+    <div id="anti_map">
+        <section class="icon_row">
+          <div class="icon_box">
+            <p class="header">Trip Forecast</p>
+          </div>
+          <div class="icon_box">
+            <p class="header">Today</p>
+          </div>
+          <div class="icon_box">
+            <p>Tonight</p>
+          </div>
+          <div class="icon_box">
+            <p>Sunday</p>
+          </div>
+          <div class="icon_box">
+            <p>Sunday Night</p>
+          </div>
+          <div class="icon_box">
+            <p>Monday</p>
+          </div>
+          <div class="icon_box">
+            <p>Monday Night</p>
+          </div>
+          <div class="icon_box">
+            <p>Tuesday</p>
+          </div>
+          <div class="icon_box">
+            <p>Tuesday Night</p>
+          </div>
+          <div class="icon_box">
+            <p>Wednesday</p>
+          </div>
+          <div class="icon_box">
+            Wednesday Night
+          </div>
+          <div class="icon_box">
+          </div>
+          <div class="icon_box">
+          </div>
+          <div class="icon_box">
+          </div>
+          <div class="icon_box">
+          </div>
+        </section>
+      </div><!-- end anti-map -->
+    <!-- ***************************************** -->
+    </div><!-- end container -->
+    <script>
+    let map;
+    function initMap() {
+      map = new google.maps.Map(document.getElementById('map_'), {
+        center: {lat: 38.617319, lng: -98.0},
+        zoom: 5,
+        draggableCursor: 'default'
+      });
+
+      // ajax request for directions API - doesn't work -- Error -  No 'Access-Control-Allow-Origin' header
+      // google.maps.event.addListener(map, 'click', function(event) {
+      //   let url_route = "https://maps.googleapis.com/maps/api/directions/json?origin=75+9th+Ave+New+York,+NY&destination=MetLife+Stadium+1+MetLife+Stadium+Dr+East+Rutherford,+NJ+07073?key=AIzaSyAd0ZZdBnJftinI-qHnPoP9kq5Mtkey6Ac";
+      //   //let url_route = "https://maps.googleapis.com/maps/api/directions/json?origin=75+9th+Ave+New+York,+NY&destination=MetLife+Stadium+1+MetLife+Stadium+Dr+East+Rutherford,+NJ+07073&key=AIzaSyCw4czRm3DzsYvilZl7s2_TgLJedG5RVbg";
+      //
+      //   console.log('url_route - ', url_route);
+      //
+      // //   $.ajax({
+      // //     url: url_route,
+      // //     type: "GET",
+      // //     dataType: 'json',
+      // //     cache: false,
+      // //     success: function(res_route){
+      // //         console.log('res_route - ', res_route);
+      // //     }
+      // // });
+      // //   });
+      //
+      //   $.get(url_route, function(res_route) {
+      //       console.log('res_route - ', res_route);
+      //   // add a red line on map to show route
+      // }, 'json');  // end directions ajax request
+      // });
+
+      let location = "";
+      let locations = [];
+      // ajax request for reverse geo-coding
+      google.maps.event.addListener(map, 'click', function(event) {
+        console.log('click event - ', event);
+        let url_geocode = "https://maps.googleapis.com/maps/api/geocode/json?latlng="
+        + event.latLng.lat() + "," + event.latLng.lng() + "&result_type=postal_code&key=AIzaSyCw4czRm3DzsYvilZl7s2_TgLJedG5RVbg";
+        console.log('url_geo - ', url_geocode);
+
+        $.get(url_geocode, function(res_geo) {
+          console.log('res_geo - ', res_geo);
+          let town = res_geo['results'][0]['address_components'][1]['long_name'];
+          let state = res_geo['results'][0]['address_components'][2]['short_name'];
+          location = town + ', ' + state;
+          // add name of location as a label to weather icons
+          let locations_div = document.querySelector('#display_data');
+          $("#display_data").append('<div>' + location + '</div>');
+          console.log('locations div = ', locations_div);
+        }, 'json');  // end geocode ajax request
+      });
+
+      // ajax request to weather.gov
+      google.maps.event.addListener(map, 'click', function(event) {
+        let url_weather = "https://api.weather.gov/points/" +
+        event.latLng.lat() + "," + event.latLng.lng() + "/forecast";
+        $.get(url_weather, function(res) {
+          console.log("res_weather - ", res);
+          let location_data = res.properties.periods;
+          let first_row = '<section class="icon_row"><div class="icon_box">' +
+          '<p class="header">Trip Forecast</p></div>';
+          for (let k = 0; k <location_data.length; k++) {  // add names of days
+            first_row += '<div class="icon_box"><p class="header">' + location_data[k].name + '</p></div>';
+          }
+          first_row += '</div>'
+          $("#anti_map").append(first_row);
+          // keep for reference /*for this click on map, append data to side_bar */
+          // $("#display_data").append("<p>Lat:  " + res.geometry.coordinates[1] +
+          //     "   Lng:  " + res.geometry.coordinates[0] + '</p>');
+          /* for the location on the map that was clicked,
+          // build a row - insert 14 thumbnails with short forecast and hi/lo temp */
+          let row_str = '<section class="icon_row"><div class="icon_box city_box"><p class="location">' +
+          location + '</p></div>';
+
+          for (let j = 0; j < location_data.length; j++) {
+            row_str += '<div class="icon_box"><img class="weather_icon" src="' + location_data[j].icon + '">';
+            row_str += '<p class="icon_text">' + location_data[j].shortForecast +
+            '</p><p class="temp hi">' + location_data[j].temperature + '</p></div>';
+          }
+          row_str += '</section>'; // append closing tag for icon_row
+          $("#anti_map").append(row_str);
+        }, 'json');  // end weather ajax request
+      });
+      /* button click causes map and sidebar to disappear and anti_map to become visible */
+      $("#switch_view").click(function(){
+        $("#map_").toggle();
+        $("#anti_map").toggle();
+        $("#side_bar_").toggle();
+
+      });
+      //setMarkers(map, waypoints);  // not implemented yet, will display icons on clicked locations
+    } /* end of initMap() */
+
+    function setMarkers(map, trees) {  // change this to display weather data
+
+      /* initialize variables for tree data */
+      let lat_lng = {"lng": 0, "lat": 0};
+      let tree_id, species, species_cap, variety, start_date, section, row, icon_1;  // notes not implemented
+
+      console.log(trees);  // view data structure in console
+      for (let tree in trees) {
+        for (var i = 0; i < trees[tree].length; i++) {
+          for (key2 in trees[tree][i]) {
+            // in each iteration -
+            // 1) extract all necessary data for this tree and put in variables
+            for (key3 in trees[tree][i][key2]) {
+              var data_point = trees[tree][i][key2][key3];
+              tree_id = key2;
+              icon_1 = "images/dir_0.png";
+              if (key3 === "location") {
+                lat_lng.lng = (data_point.lng);
+                lat_lng.lat = (data_point.lat);
+              }
+              else if (key3 === "species") {
+                species = data_point;
+                species_cap = capitalizeFirstLetter(species);
+              }
+              else if (key3 === "variety") {
+                variety = data_point;
+              }
+              else if (key3 === "section") {
+                section = data_point;
+              }
+              else if (key3 === "row") {
+                row = data_point;
+              }
+              else if (key3 === "date_planted") {
+                start_date = data_point;
+                if (!start_date) {
+                  start_date = "Unknown";
+                }
+              }
+              //else if (key3 === "notes") {
+              // not implemented yet
+              //}
+              //else if (key3 === "icon") {
+              // not implemented yet
+              //}
+            }
+            // 2) set up a marker, give lat lng
+            var marker = new google.maps.Marker({
+              map: map, position: lat_lng,
+              icon: icon_1
+
+            });
+            // 3) create html content for infoWindow
+            var content = ("<h3>" + species_cap + " - " + variety + "</h3>" +
+            "<p>Tree ID - " + key2 + "</p>" +
+            "<p>Section - " + section + "</p>" +
+            "<p>Row - " + row + "</p>" +
+            "<p>Date planted - " + start_date + "</p>" +
+            "<p>Notes - </p>");
+            console.log(content);
+            // 4) load the content into the infoWindow
+            var infowindow = new google.maps.InfoWindow()
+            // 5) attach an event listener
+            google.maps.event.addListener(marker, 'click', (function (marker, content, infowindow) {
+              return function () {
+                /* close the previous info-window */
+                closeInfos();
+                infowindow.setContent(content);
+                infowindow.open(map, marker);
+                /* keep the handle, in order to close it on next click event */
+                infos[0] = infowindow;
+              };
+            })(marker, content, infowindow));
+          }
+        }
+      }
+    }
+
+    function capitalizeFirstLetter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    function closeInfos() {
+      if (infos.length > 0) {
+        /* detach info-window from marker */
+        infos[0].set("marker", null);
+        /* and close it */
+        infos[0].close();
+        /* blank the array */
+        infos.length = 0;
+      }
+    }
+  </script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAd0ZZdBnJftinI-qHnPoP9kq5Mtkey6Ac&callback=initMap"
+  async defer></script>
+</body>
+</html>
