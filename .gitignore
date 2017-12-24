@@ -6,3 +6,5 @@
 
 # Ignore all files in .idea folders - WebStorm and RubyMine stuff
 **/.idea
+screenshots/
+.DS_Store
