@@ -6,59 +6,58 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <!--<link rel="stylesheet" href="_css/bootstrap.min.css">-->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
-  <title>Trip Forecast - Weather reports across the US</title>
-  <link rel="stylesheet" href="_css/styles.css">
+<link rel="stylesheet" href="stylesheets/styles.css">
+  <title>TripInfo.US - Weather reports across the US</title>
   <!--<script src="jquery-3.2.1.min.js"></script>-->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script>var infos = [];  // tracks infoWindows</script>
 </head>
 <body>
   <div id="container_">
     <div id="side_bar_">
       <div id="mainTitle">
-        <h1>Trip Forecast</h1>
+        <h1>TripInfo.US</h1>
         <h3>Click on locations along your route</h3>
-        <button class="switch_view">Show forecasts</button>
+        <button class="showForecasts btn_sidebar invisible">Show forecasts</button>
       </div>
-      <div id="display_data"></div>
+      <div id="cityNames"></div>
 
       <div class="grid">
-        <button class="switch_view">Show forecasts</button>
+        <button class="showForecasts btn_sidebar invisible">Show forecasts</button>
       </div>
       <div class="grid">
-        <button id="startOver"><a href="index.html">Erase and Start Over</a></button>
+        <button id="startOver" class="btn_sidebar invisible"><a href="index.html">Erase and Start Over</a></button>
       </div>
-      <div class="grid">
-        <button id="saveLocally">Save to Local Storage</button>
-      </div>
-        <div id="footer">
-        <p>Andrew Patrick Bartson</p>
+      <!-- <div class="grid">
+        <button id="saveLocally" class="btn_sidebar invisible">Save to Local Storage</button>
+      </div> -->
+      <div id="footer">
+        <p>Andrew Bartson, Seattle</p>
       </div>
     </div>
     <div id="map_"></div>
-    <div id="anti_map">
+    <div id="forecastGrid">
       <div class="header_row">
 
         <div class="header_box"><button id="goBack">Return to Map</button></div>
-        <div class="header_box"><p class="header"></p></div>
-        <div class="header_box"><p class="header"></p></div>
-        <div class="header_box"><p class="header"></p></div>
-        <div class="header_box"><p class="header"></p></div>
-        <div class="header_box"><p class="header"></p></div>
-        <div class="header_box"><p class="header"></p></div>
-        <div class="header_box"><p class="header"></p></div>
-        <div class="header_box"><p class="header"></p></div>
-        <div class="header_box"><p class="header"></p></div>
-        <div class="header_box"><p class="header"></p></div>
-        <div class="header_box"><p class="header"></p></div>
-        <div class="header_box"><p class="header"></p></div>
-        <div class="header_box"><p class="header"></p></div>
-        <div class="header_box"><p class="header"></p></div>
+        <div class="header_box"><p class="timePeriod"></p></div>
+        <div class="header_box"><p class="timePeriod"></p></div>
+        <div class="header_box"><p class="timePeriod"></p></div>
+        <div class="header_box"><p class="timePeriod"></p></div>
+        <div class="header_box"><p class="timePeriod"></p></div>
+        <div class="header_box"><p class="timePeriod"></p></div>
+        <div class="header_box"><p class="timePeriod"></p></div>
+        <div class="header_box"><p class="timePeriod"></p></div>
+        <div class="header_box"><p class="timePeriod"></p></div>
+        <div class="header_box"><p class="timePeriod"></p></div>
+        <div class="header_box"><p class="timePeriod"></p></div>
+        <div class="header_box"><p class="timePeriod"></p></div>
+        <div class="header_box"><p class="timePeriod"></p></div>
+        <div class="header_box"><p class="timePeriod"></p></div>
       </div>
     </div>
   </div><!-- end container -->
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAd0ZZdBnJftinI-qHnPoP9kq5Mtkey6Ac&callback=initMap"
   async defer></script>
-  <script src="_js/controller.js"></script>
+  <script src="javascripts/appController.js"></script>
 </body>
 </html>
