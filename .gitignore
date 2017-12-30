@@ -8,3 +8,4 @@
 **/.idea
 screenshots/
 .DS_Store
+cron.yaml

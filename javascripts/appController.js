@@ -129,7 +129,6 @@ function addGeoDataToSidebar(res_geo, forecastObj) {
 function sendWeatherRequest(event, forecastObj) {
   let url_weather = "https://api.weather.gov/points/" +
   forecastObj.lat + "," + forecastObj.lng + "/forecast";
-  console.log(url_weather)
   $.ajax({
     url: url_weather,
     type: "GET",
