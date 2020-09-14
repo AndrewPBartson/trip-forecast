@@ -1,7 +1,8 @@
 let map;
 let forecastSet = [];
 
-//----------------- Initialize map and event listener --------------------
+// ---------------- Initialize map and event listener --------------------
+
 function initMap() {
   map = new google.maps.Map(document.getElementById('map_'), {
     center: {lat: 38.617319, lng: -98.0},
@@ -22,16 +23,17 @@ function initMap() {
   });
 }
 
-//------------ Get lat/lng from click event, round it off ---------------------
+// ----------- Get lat/lng from click event, round it off ---------------------
 
 function getLatLng(event, forecastObj) {
   let tempLat = event.latLng.lat();
   let tempLng = event.latLng.lng();
   forecastObj.lat = tempLat.toFixed(4);
   forecastObj.lng = tempLng.toFixed(4);
+  console.log('forecastObj :', forecastObj);
 }
 
-//-------------- Ajax request for name of city and state ----------------------
+// ------------- Ajax request for name of city and state ----------------------
 
 function sendGeoRequest(event, forecastObj) {
   let url_geo = "https://maps.googleapis.com/maps/api/geocode/json?latlng="
@@ -60,7 +62,7 @@ function sendGeoRequest(event, forecastObj) {
   });
 }
 
-//-------------- if invalid response -  ---------------------------------------
+// ------------- if invalid response -  ---------------------------------------
 
 function showErrorMsg(forecastObj) {
   forecastObj.messages.push('Please try again.');
@@ -70,7 +72,7 @@ function showErrorMsg(forecastObj) {
     });
   }
 }
-//--------------- Clear error messages from city list --------------------------
+// -------------- Clear error messages from city list --------------------------
 
 function clearErrorMsg() {
   // if there are any previous error messages, remove them.
@@ -81,7 +83,7 @@ function clearErrorMsg() {
   });
 }
 
-//---------------- Check geo response - undefined? in US?  --------------------
+// --------------- Check geo response - undefined? in US?  --------------------
 
 function validateGeoRes(res_geo, forecastObj) {
   if (res_geo['results'][0] === undefined) {
@@ -99,7 +101,7 @@ function validateGeoRes(res_geo, forecastObj) {
   return true;
 }
 
-//---------------------- Add marker to map ------------------------------------
+// --------------------- Add marker to map ------------------------------------
 
 function createMarker(position, map, forecastObj) {
   var marker = new google.maps.Marker ({
@@ -110,7 +112,7 @@ function createMarker(position, map, forecastObj) {
   forecastObj.marker = marker;
 }
 
-//------------------ Add city and state to forecast object --------------------
+// ----------------- Add city and state to forecast object --------------------
 
 function addGeoDataToObj(res_geo, forecastObj) {
   forecastObj.city = res_geo['results'][0]['address_components'][1]['long_name'];
@@ -119,12 +121,13 @@ function addGeoDataToObj(res_geo, forecastObj) {
   forecastObj.location = forecastObj.city + ', ' + forecastObj.state;
 }
 
-//----------------------- Add city and state to sidebar ---------------------------
+// ---------------------- Add city and state to sidebar ---------------------------
+
 function addGeoDataToSidebar(res_geo, forecastObj) {
   $("#cityNames").append('<div><p class="placeName">' + forecastObj.location + '</p></div>');
 }
 
-//------------ Ajax request for weather data for clicked location -------------
+// ----------- Ajax request for weather data for clicked location -------------
 
 function sendWeatherRequest(event, forecastObj) {
   let url_weather = "https://api.weather.gov/points/" +
@@ -137,6 +140,7 @@ function sendWeatherRequest(event, forecastObj) {
       forecastObj.weatherResComplete = true;
       forecastObj.validWeatherRes = true;
       //console.log("Ajax response for weather - ", res_weather);
+      console.log('res_weather : ', res_weather);
       addWeatherDataToObj(res_weather, forecastObj);
       addWeatherDataToPage(res_weather, forecastObj);
       forecastController(forecastObj);
@@ -145,11 +149,10 @@ function sendWeatherRequest(event, forecastObj) {
       forecastObj.weatherResComplete = true;
       forecastObj.validWeatherRes = false;
       forecastObj.messages.push('No data from weather server.')
-      //console.log("Ajax response for weather - ", res_weather);
       forecastController(forecastObj);
     }
   });
-  //console.log("Forecast object - ", forecastObj);
+  // console.log("Forecast object - ", forecastObj);
 }
 
 function rollBack(forecastObj) {
@@ -169,20 +172,21 @@ function rollBack(forecastObj) {
   }
 }
 
-//-------------------- Add weather data to forecast object --------------------
+// ------------------- Add weather data to forecast object --------------------
 
 function addWeatherDataToObj(res_weather, forecastObj) {
   forecastObj.periods = res_weather.properties.periods;
 }
 
-//----------------------- Add weather data to DOM -----------------------------
+// ---------------------- Add weather data to DOM -----------------------------
 
 function addWeatherDataToPage(res_weather, forecastObj) {
   createForecastHeader(forecastObj);
   $("#forecastGrid").append(createForecastRow(forecastObj));
 }
 
-//--------------- Create header row for forecast grid -------------------------
+// -------------- Create header row for forecast grid -------------------------
+
 function createForecastHeader(forecastObj) {
   // if it hasn't been done yet,
   // insert names of days and nights into prebuilt timePeriod boxes
@@ -194,7 +198,7 @@ function createForecastHeader(forecastObj) {
   }
 }
 
-//--------------- Create row of forecasts for one location --------------------
+// -------------- Create row of forecasts for one location --------------------
 function createForecastRow(forecastObj) {
   // create the first part of a forecast row starting with name of location
   let rowStr = '<section class="icon_row"><div class="icon_box city_box"><p class="location">' +
@@ -210,7 +214,7 @@ function createForecastRow(forecastObj) {
   return rowStr;
 }
 
-//------------ Decision - complete transaction or rollback --------------------
+// ----------- Decision - complete transaction or rollback --------------------
 function forecastController(forecastObj) {
   if (forecastObj.geoResComplete && forecastObj.weatherResComplete) {
     if (forecastObj.validGeoRes && forecastObj.validWeatherRes) {
@@ -224,7 +228,7 @@ function forecastController(forecastObj) {
   }
 }
 
-//--------- If ajax requests are successful, show buttons in sidebar ----------
+// -------- If ajax requests are successful, show buttons in sidebar ----------
 function refreshButtons () {
   let buttonList = document.querySelectorAll(".btn_sidebar");
   for(button of buttonList) {
@@ -236,7 +240,7 @@ function refreshButtons () {
     }
   }
 }
-//--------------------- Refresh markers and city list ------------------------
+// -------------------- Refresh markers and city list ------------------------
 function refreshCitiesAndMarkers() {
   // clear markers -
   forecastSet.forEach((city, index) =>  {
@@ -252,16 +256,18 @@ function refreshCitiesAndMarkers() {
   })
 }
 
-//------ "Show Forecast" button - hide map and sidebar, show forecastGrid -----
+// ----- "Show Forecast" button - hide map and sidebar, show forecastGrid -----
 
 $(".showForecasts").click(function(){
   $("#map_").toggle();
   $("#side_bar_").toggle();
   $("#forecastGrid").toggle();
   clearErrorMsg();
+  console.log('forecastSet :', forecastSet);
+  //console.log(JSON.stringify(forecastSet));
 });
 
-//------ "Return to Map" button - hide forecastGrid, show map and sidebar -----
+// ----- "Return to Map" button - hide forecastGrid, show map and sidebar -----
 
 $("#goBack").click(function(){
   $("#map_").toggle();
@@ -270,15 +276,8 @@ $("#goBack").click(function(){
   $("#forecastGrid").toggle();
 });
 
-//------------------- "Start Over" button - reload page -----------------------
+// -------------- "Start Over" button - reload page -----------------
 
 $("#startOver").click(function(){
   forecastSet.length = 0;
 });
-
-//-------------------- "Save to Local Storage" button -------------------------
-
-// $("#saveLocally").click(function(){
-//   localStorage.setItem('forecastSet', JSON.stringify(forecastSet));
-//   const savedSet = JSON.parse(localStorage.getItem('forecastSet'));
-// })

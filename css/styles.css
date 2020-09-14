@@ -46,7 +46,6 @@
   #map_ {
     height: 100%;
     margin-left: 250px;
-    border-left: solid gray 1px;
   }
   #forecastGrid {
     display: none;
@@ -62,6 +61,7 @@
     /* to implement 'save locally' button -
     grid-template-rows: 170px auto 50px 50px 50px 50px; */
     align-items: start;
+    border-right: solid gray 1px;
   }
   #mainTitle {
     display: grid;
