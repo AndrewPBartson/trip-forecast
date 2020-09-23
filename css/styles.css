@@ -33,8 +33,7 @@
   }
   .showForecasts:hover,
   #goBack:hover,
-  #startOver:hover,
-  #saveLocally:hover {
+  #startOver:hover {
     text-decoration: none;
     color: #0000b4;
     cursor: pointer;
@@ -58,8 +57,6 @@
     color: #0000b4;
     display: grid;
     grid-template-rows: 170px auto 50px 50px 50px;
-    /* to implement 'save locally' button -
-    grid-template-rows: 170px auto 50px 50px 50px 50px; */
     align-items: start;
     border-right: solid gray 1px;
   }
@@ -71,10 +68,10 @@
   .showForecasts {
     margin: 0 40px;
   }
-  #startOver, #saveLocally {
+  #startOver {
     margin: 0 30px;
   }
-  #startOver, #saveLocally, .showForecasts {
+  #startOver, .showForecasts {
     color: black;
   }
   .invisible {

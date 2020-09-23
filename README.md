@@ -1,5 +1,5 @@
-In this application, a user clicks on one or more locations on the map. Each click retrieves a seven-day weather forecast for that location. When the user clicks "Show Forecasts", the map disappears and is replaced by a table of the weather forecasts for all the selected locations. By clicking on several locations along the route of a planned trip, the user can find out the probable weather conditions for the trip.
+This application provides seven-day weather forecasts for multiple locations. The locations are selected by clicking on the map. For example, the user may select locations along the route of a proposed trip. When the user clicks the "Show Forecasts" button, the map disappears and is replaced by a table of weather forecasts for the locations. This is especially useful for anticipating hazardous road conditions during the winter. 
 
-![Initial screen for trip and weather planning application - Select locations from map](./screenshots/first_view.jpg?raw=true "Initial screen for trip and weather planning application - Select locations from map")
-![Example of user input for trip and weather planning application](./screenshots/second_view.jpg?raw=true "Example of user input for trip and weather planning application")
-![Display of weather forecasts for all points selected by the user](./screenshots/third_view.jpg?raw=true "Display of weather forecasts for all points selected by the user")
+![Initial screen for trip and weather planning application - Select locations from map](./images/first_view.jpg?raw=true "Initial screen for trip and weather planning application - Select locations from map")
+![Example of user input for trip and weather planning application](./images/second_view.jpg?raw=true "Example of user input for trip and weather planning application")
+![Display of weather forecasts for all points selected by the user](./images/third_view.jpg?raw=true "Display of weather forecasts for all points selected by the user")

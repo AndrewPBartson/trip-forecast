@@ -199,6 +199,7 @@ function createForecastHeader(forecastObj) {
 }
 
 // -------------- Create row of forecasts for one location --------------------
+
 function createForecastRow(forecastObj) {
   // create the first part of a forecast row starting with name of location
   let rowStr = '<section class="icon_row"><div class="icon_box city_box"><p class="location">' +
@@ -215,6 +216,7 @@ function createForecastRow(forecastObj) {
 }
 
 // ----------- Decision - complete transaction or rollback --------------------
+
 function forecastController(forecastObj) {
   if (forecastObj.geoResComplete && forecastObj.weatherResComplete) {
     if (forecastObj.validGeoRes && forecastObj.validWeatherRes) {
@@ -229,6 +231,7 @@ function forecastController(forecastObj) {
 }
 
 // -------- If ajax requests are successful, show buttons in sidebar ----------
+
 function refreshButtons () {
   let buttonList = document.querySelectorAll(".btn_sidebar");
   for(button of buttonList) {
@@ -241,6 +244,7 @@ function refreshButtons () {
   }
 }
 // -------------------- Refresh markers and city list ------------------------
+
 function refreshCitiesAndMarkers() {
   // clear markers -
   forecastSet.forEach((city, index) =>  {
