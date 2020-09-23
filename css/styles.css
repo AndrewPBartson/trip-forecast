@@ -56,7 +56,7 @@
     float: left;
     color: #0000b4;
     display: grid;
-    grid-template-rows: 170px auto 50px 50px 50px;
+    grid-template-rows: 170px auto 50px 50px 58px;
     align-items: start;
     border-right: solid gray 1px;
   }
@@ -88,6 +88,9 @@
     margin: 0;
     color: #3e3a3a;
     text-shadow: 1px 3px 2px #ddd;
+  }
+  .sm_text {
+    font-size: 13px;
   }
   #cityNames {
     margin: 0;
